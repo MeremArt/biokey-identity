@@ -1,0 +1,372 @@
+{
+  "address": "HXEPyKzidcNAbnNWY1DMu433eBcN4nP1m381QdVKQe2S",
+  "metadata": {
+    "name": "biokey",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "check_authentication",
+      "discriminator": [
+        129,
+        62,
+        67,
+        246,
+        230,
+        126,
+        238,
+        205
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "docs": [
+            "user performing the authentication check"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "auth_state",
+          "docs": [
+            "The PDA storing the user's authentication state"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  117,
+                  116,
+                  104,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [],
+      "returns": "bool"
+    },
+    {
+      "name": "create_or_update_auth_state",
+      "discriminator": [
+        239,
+        69,
+        221,
+        15,
+        42,
+        73,
+        118,
+        91
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "auth_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  117,
+                  116,
+                  104,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "is_authenticated",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "create_user_account",
+      "discriminator": [
+        146,
+        68,
+        100,
+        69,
+        63,
+        46,
+        182,
+        199
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "hashed_fingerprint",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "fetch_user_fingerprint",
+      "discriminator": [
+        229,
+        48,
+        83,
+        85,
+        129,
+        236,
+        11,
+        78
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_account",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [],
+      "returns": {
+        "array": [
+          "u8",
+          32
+        ]
+      }
+    },
+    {
+      "name": "validate_fingerprint",
+      "discriminator": [
+        111,
+        128,
+        215,
+        193,
+        147,
+        130,
+        139,
+        15
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_account",
+          "docs": [
+            "The PDA account storing the user's hashed fingerprint"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "provided_hashed_fingerprint",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ],
+      "returns": "bool"
+    }
+  ],
+  "accounts": [
+    {
+      "name": "AuthState",
+      "discriminator": [
+        20,
+        35,
+        164,
+        183,
+        66,
+        69,
+        78,
+        224
+      ]
+    },
+    {
+      "name": "UserAccountState",
+      "discriminator": [
+        32,
+        153,
+        70,
+        190,
+        135,
+        71,
+        10,
+        113
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidPublicKey",
+      "msg": "The provided public key does not match the expected owner."
+    }
+  ],
+  "types": [
+    {
+      "name": "AuthState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "is_authenticated",
+            "type": "bool"
+          },
+          {
+            "name": "last_auth_time",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserAccountState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "hashed_fingerprint",
+            "docs": [
+              "Hashed fingerprint of the user (32 bytes, e.g., SHA-256)"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "public_key",
+            "type": "pubkey"
+          },
+          {
+            "name": "created_at",
+            "docs": [
+              "Timestamp when the account was created"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}
